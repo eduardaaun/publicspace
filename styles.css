@@ -1,0 +1,164 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.left-sidebar{
+    max-height: 100%;
+    width: 250px;
+}
+.left-sidebar {
+    position: absolute;
+    left: auto;
+    display: inline-block;
+    background-color: white;
+    border: 5px;
+    box-shadow: 1px 1px 3px #9e9e9e;
+    padding: 20px;
+    margin: 0px;
+    font-size: 1.6em;
+  z-index: 3;
+  
+.map-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%; 
+}
+
+#map {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.layer-picker:
+position: absolute;
+right: 15px;
+top: 15px;
+z-index: 20000; 
+}
+
+p{
+  font-family:helvetica;
+  font-size:12px;
+}
+
+.title{
+  color:#B10CFF;
+  font-family:helvetica;
+  font-size:30px;
+  font-weight:bold;
+  margin-top:0px;
+}  
+
+.subtitle-commoning{
+  color:deeppink;
+  font-family:helvetica;
+  font-size:12px;
+  font-weight:bold;
+}  
+
+.subtitle-charact{
+  color:#FF7800;
+  font-family:helvetica;
+  font-size:12px;
+  font-weight:bold;
+}  
+
+.subtitle-access{
+  color:#16FC73;
+  font-family:helvetica;
+  font-size:12px;
+  font-weight:bold;
+}  
+.description{
+  color:black;
+  font-family:arial;
+  font-size:12px;
+}
+
+a{
+  color:#FF7800;
+}
+  
+#map {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.income-button {
+    background-color: white; 
+    border: 2px solid #FF7800;
+    color: #FF7800;
+    padding: 5px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.density-button {
+    background-color: white; 
+    border: 2px solid #FF7800;
+    color: #FF7800;
+    padding: 5px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.busstop-button {
+    background-color: white; 
+    border: 2px solid #16FC73;
+    color: #16FC73;
+    padding: 5px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.bike-button {
+    background-color: white; 
+    border: 2px solid #16FC73;
+    color: #16FC73;
+    padding: 5px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.subway-button {
+    background-color: white; 
+    border: 2px solid #16FC73;
+    color: #16FC73;
+    padding: 5px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+  
+.leaflet-popup-content-wrapper {
+    padding: 1px;
+    text-align: left;
+    border-radius:0px;
+  }
+  
+h1 {
+    display: block;
+    font-size: 13px;
+  font-weight: bold;
+  color: deeppink; 
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
