@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>public space | brasilia </title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" rel="stylesheet">
+    <link href="./styles.css" rel="stylesheet">
+  </head>
+  
+  <body>
+    <div class="map-wrapper">
+      <div id="map"></div>
+    </div>
+
+    <div class="left-sidebar" style="height: 686px;">
+    
+    <p class="title">
+        public</br>space // <span style="color:black;font-size:30px">brasilia <p>
+  
+  <p class ="subtitle-commoning">
+    PEOPLE / ACTIONS / SPACES
+  </p>
+   <select class="people-picker">
+        <option value="all">Everyone</option>
+        <option value="community organization">Community organizations</option>
+        <option value="cultural producer">Cultural producers</option>
+        <option value="urban experts">Urban experts</option>
+     <option value="activists">Activists</option>
+  </select>
+   <br>
+   <select class="action-picker">
+        <option value="all">All actions</option>
+        <option value="party">Party</option>
+        <option value="music">Music</option>
+        <option value="street carnival">Street carnival</option>
+        <option value="samba circle">Samba circle</option>
+        <option value="sarau">Sarau</option>
+        <option value="market">Market</option>
+        <option value="creative economy">Creative economy</option>
+        <option value="itinerant bar">Itinerant bar</option>
+        <option value="critical mass cycling">Critical mass cycling</option>
+        <option value="community garden">Community garden</option>
+  </select>
+ <br>
+   <select class="space-picker">
+        <option value="all">All spaces</option>
+        <option value="praca">Squares</option>
+        <option value="parque">Parks</option>
+        <option value="calcadao">Boardwalks</option>
+        <option value="gramado">Lawns</option>
+        <option value="lote vazio">Empty lots</option>
+        <option value="entrequadra">Entrequadra</option>
+        <option value="beco">Alleys</option>
+        <option value="passarela subterranea">Undeground passages</option>
+        <option value="equipamento cultural">Cultural Amenities</option>
+        <option value="casa de cultura">Cultural Houses</option>
+  </select>
+  
+    <p class ="subtitle-charact">
+    NEIGHBORHOOD CHARACTERISTICS 
+  </p>
+  
+  <div class="buttons">
+        <button class="income-button">
+          Income
+    </button>
+    
+     <button class="density-button">
+          Density
+    </button>
+    
+    <p class ="subtitle-access">
+    ACCESSIBILITY
+    </p>
+    
+  <div class="buttons">
+        <button class="busstop-button">
+          Bus Stops
+    </button>
+    <div class="buttons">
+        <button class="subway-button">
+          Subway Line
+      </button>
+    <div class="buttons">
+        <button class="bike-button">
+          Shared Bike Stations
+      </button>
+    
+      <p>
+        Tell me what you think! </br><input type="text">
+      </p>
+    <!-- Load Leaflet and Carto libraries -->
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/v4.0.0-beta/carto.min.js"></script>
+    
+    <!-- Load our JavaScript -->
+<script src="./script.js"></script>
+  </body>
+</html>
+
