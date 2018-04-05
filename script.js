@@ -32,7 +32,7 @@ var casestudiesStyle = new carto.style.CartoCSS(`
 
 // Add style to the data
 var casestudiesLayer = new carto.layer.Layer(casestudiesSource, casestudiesStyle, {
-  featureClickColumns: ['cartodb_id', 'atividade','activity','organizado', 'name', '_when', 'local','foto','foto_2', 'foto_3','contact']
+  featureClickColumns: ['cartodb_id', 'atividade','activity','organizado', 'name', 'descriptio','_when', 'local','foto','foto_2', 'foto_3','contact',]
 });
 
 var popup = L.popup();
@@ -47,6 +47,21 @@ casestudiesLayer.on('featureClicked', function (event) {
    content += '<div>Where: ' + event.data['local'] + ' </div>';
   content += '<div>When: ' + event.data['_when'] + ' </div>';
   popup.setContent(content);
+  
+
+  var sidebar = document.querySelector('.sidebar-feature-content');
+  casestudiesLayer.on('featureClicked', function (event) {
+  var content = '<h3>' + event.data['name'] + '</h3>'
+  content += '<h4>' + event.data['activity'] + ' <h4>';
+  content += '<h5>' + event.data['descriptio'] + ' <h5>';
+  content += '<div>Organized by: ' + event.data['organizado'] + ' </div>';
+  content += '<div>' + event.data['_when'] + ' </div>';
+  
+  
+  // Then put the HTML inside the sidebar. Once you click on a feature, the HTML
+  // for the sidebar will change.
+  sidebar.innerHTML = content;
+});
   
   // Place the popup and open it
   popup.setLatLng(event.latLng);
@@ -70,7 +85,26 @@ var spacesStyle = new carto.style.CartoCSS(`
 `);
 
 // Add style to the data
-var spacesLayer = new carto.layer.Layer(spacesSource, spacesStyle);
+var spacesLayer = new carto.layer.Layer(spacesSource, spacesStyle, {
+  featureClickColumns: ['cartodb_id', 'name','tipo']
+});
+
+
+var popup = L.popup();
+spacesLayer.on('featureClicked', function (event) {
+  
+  // Create the HTML that will go in the popup. event.data has all the data for 
+  // the clicked feature.
+  //
+  // I will add the content line-by-line here to make it a little easier to read.
+  var content = '<h1>' + event.data['name'] + '</h1>'
+    content += '<div>' + event.data['tipo'] + ' </div>';
+  popup.setContent(content);
+  
+  // Place the popup and open it
+  popup.setLatLng(event.latLng);
+  popup.openOn(map);
+});
 
 /*
  * Begin layer four - income 
@@ -94,14 +128,36 @@ var incomeStyle = new carto.style.CartoCSS(`
 var incomeLayer = new carto.layer.Layer(incomeSource, incomeStyle);
 
 /*
+ * Begin layer - density
+ */
+
+// Initialze source data
+var densitySource = new carto.source.SQL('SELECT * FROM density_eduarda');
+
+// Create style for the data
+var densityStyle = new carto.style.CartoCSS(`
+#layer {
+  polygon-fill: ramp([density], (#ffd4af, #ffa24f, #ff7a04, #ff7800, #ab5100), jenks);
+  polygon-opacity: 0.8;
+}
+#layer::outline {
+  line-width: 1;
+  line-color: #ffffff;
+  line-opacity: 0;
+}
+`);
+// Add style to the data
+var densityLayer = new carto.layer.Layer(densitySource, densityStyle);
+
+/*
  * Begin layer five - bus stops
  */
 
 // Initialze source data
-var busstopSource = new carto.source.Dataset('pontos_parada');
+var busSource = new carto.source.SQL('SELECT * FROM pontos_parada')
 
 // Create style for the data
-var busstopStyle = new carto.style.CartoCSS(`
+var busStyle = new carto.style.CartoCSS(`
  #layer {
   marker-width: 10;
   marker-fill: #16fc73;
@@ -113,18 +169,19 @@ var busstopStyle = new carto.style.CartoCSS(`
  [zoom >= 13] {
     marker-fill-opacity: 1;
     marker-line-opacity: 1;
+    marker-width: 20;
 }
 }
 `);
 // Add style to the data
-var busstopLayer = new carto.layer.Layer(busstopSource, busstopStyle);
+var busLayer = new carto.layer.Layer(busSource, busStyle);
 
 /*
  * Begin layer six - bike share
  */
 
 // Initialze source data
-var bikeSource = new carto.source.Dataset('bikeshare_bsb');
+var bikeSource = new carto.source.SQL('SELECT * FROM bikeshare_bsb')
 
 // Create style for the data
 var bikeStyle = new carto.style.CartoCSS(`
@@ -139,6 +196,7 @@ var bikeStyle = new carto.style.CartoCSS(`
  [zoom >= 13] {
     marker-fill-opacity: 1;
     marker-line-opacity: 1;
+    marker-width: 20;
 }
 }
 `);
@@ -150,28 +208,23 @@ var bikeLayer = new carto.layer.Layer(bikeSource, bikeStyle);
  */
 
 // Initialze source data
-var subwaylineSource = new carto.source.Dataset('metroline');
+var subwaySource = new carto.source.SQL('SELECT * FROM metroline')
 
 // Create style for the data
-var subwaylineStyle = new carto.style.CartoCSS(`
-  #layer {
-  line-width: 2;
+var subwayStyle = new carto.style.CartoCSS(`
+ #layer {
+  line-width: 3px;
   line-color: #16fc73;
-  line-opacity: 0;
-  line-style: dashed;
- [zoom >= 13] {
-    marker-fill-opacity: 1;
-    marker-line-opacity: 1;
-}
+  line-opacity: 0.5;
 }
 `);
 // Add style to the data
-var subwaylineLayer = new carto.layer.Layer(subwaylineSource, subwaylineStyle);
+var subwayLayer = new carto.layer.Layer(subwaySource, subwayStyle);
 
 
 
 // Add the data to the map as two layers. Order matters here--first one goes on the bottom
-client.addLayers([incomeLayer, busstopLayer, bikeLayer, spacesLayer, casestudiesLayer]);
+client.addLayers([densityLayer, incomeLayer, busLayer, bikeLayer, subwayLayer, spacesLayer, casestudiesLayer]);
 client.getLeafletLayer().addTo(map);
 
 
@@ -263,17 +316,103 @@ spacePicker.addEventListener('change', function (e) {
   console.log('Dropdown changed to "' + tipo + '"');
 });
 
-/*
- * Listen for changes on the layer picker - income button 
- */
+// Keep track of whether the DENSITY layer is currently visible
+var densityVisible = true;
 
-// Step 1: Find the button by its class. If you are using a different class, change this.
-var incomeButton = document.querySelector('.income-button');
-
-// Step 2: Add an event listener to the button. We will run some code whenever the button is clicked.
-incomeButton.addEventListener('click', function (e) {
-  source.setQuery("SELECT * FROM renda_raca_brasilia_1 WHERE = 'Juvenile'");
-  
-  // Sometimes it helps to log messages, here we log to let us know the button was clicked. You can see this if you open developer tools and look at the console.
-  console.log('Juvenile was clicked');
+// When the density button is clicked, show or hide the layer
+var densityButton = document.querySelector('.density-checkbox');
+densityButton.addEventListener('click', function () {
+  if (densityVisible) {
+    // density is visible, so remove that layer
+    client.removeLayer(densityLayer);
+    
+    // Then update the variable tracking whether the layer is shown
+    densityVisible = false;
+  }
+  else {
+    // Do the reverse if density is not visible
+    client.addLayer(densityLayer);
+    densityVisible = true;
+  }
 });
+
+// Keep track of whether the INCOME layer is currently visible
+var incomeVisible = true;
+
+// When the income button is clicked, show or hide the layer
+var incomeButton = document.querySelector('.income-checkbox');
+incomeButton.addEventListener('click', function () {
+  if (incomeVisible) {
+    // income is visible, so remove that layer
+    client.removeLayer(incomeLayer);
+    
+    // Then update the variable tracking whether the layer is shown
+    incomeVisible = false;
+  }
+  else {
+    // Do the reverse if income is not visible
+    client.addLayer(incomeLayer);
+    incomeVisible = true;
+  }
+});
+
+// Keep track of whether the BUS layer is currently visible
+var busVisible = true;
+
+// When the bus button is clicked, show or hide the layer
+var busButton = document.querySelector('.bus-checkbox');
+busButton.addEventListener('click', function () {
+  if (busVisible) {
+    // bus is visible, so remove that layer
+    client.removeLayer(busLayer);
+    
+    // Then update the variable tracking whether the layer is shown
+    busVisible = false;
+  }
+  else {
+    // Do the reverse if bus is not visible
+    client.addLayer(busLayer);
+    busVisible = true;
+  }
+});
+
+// Keep track of whether the BIKE layer is currently visible
+var bikeVisible = true;
+
+// When the bike button is clicked, show or hide the layer
+var bikeButton = document.querySelector('.bike-checkbox');
+bikeButton.addEventListener('click', function () {
+  if (bikeVisible) {
+    // bike is visible, so remove that layer
+    client.removeLayer(bikeLayer);
+    
+    // Then update the variable tracking whether the layer is shown
+    bikeVisible = false;
+  }
+  else {
+    // Do the reverse if bus is not visible
+    client.addLayer(bikeLayer);
+    bikeVisible = true;
+  }
+});
+
+// Keep track of whether the SUBWAY layer is currently visible
+var subwayVisible = true;
+
+// When the subway button is clicked, show or hide the layer
+var subwayButton = document.querySelector('.subway-checkbox');
+subwayButton.addEventListener('click', function () {
+  if (subwayVisible) {
+    // subway is visible, so remove that layer
+    client.removeLayer(subwayLayer);
+    
+    // Then update the variable tracking whether the layer is shown
+    subwayVisible = false;
+  }
+  else {
+    // Do the reverse if bus is not visible
+    client.addLayer(subwayLayer);
+    subwayVisible = true;
+  }
+});
+
