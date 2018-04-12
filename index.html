@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <link href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" rel="stylesheet">
     <link href="./styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis|Inconsolata" rel="stylesheet">
   </head>
   
   <body>
@@ -16,10 +17,10 @@
     <div class="left-sidebar" style="height: 686px;">
     
     <p class="title">
-        public</br>space // <span style="color:black;font-size:30px">brasilia <p>
+        PUBLIC</br>SPACE // <span style="color:black;font-size:25px;text-transform: uppercase;">brasilia <p>
   
   <p class ="subtitle-commoning">
-    PEOPLE / ACTIONS / SPACES
+    PEOPLE / ACTIONS / SPACES / TIME 
   </p>
    <select class="people-picker">
         <option value="all">Everyone</option>
@@ -54,6 +55,7 @@
         <option value="all">All spaces</option>
         <option value="praca">Squares</option>
         <option value="parque">Parks</option>
+        <option value="skatepark">Skatepark</option>
         <option value="calcadao">Boardwalks</option>
         <option value="gramado">Lawns</option>
         <option value="lote vazio">Empty lots</option>
@@ -62,6 +64,12 @@
         <option value="passarela subterranea">Undeground passages</option>
         <option value="equipamento cultural">Cultural Amenities</option>
         <option value="casa de cultura">Cultural Houses</option>
+  </select>
+    <br>
+   <select class="time-picker">
+        <option value="all">All times</option>
+        <option value="temporary">Temporary</option>
+        <option value="permanent">Permanent</option>
   </select>
   
     <p class ="subtitle-charact">
@@ -110,6 +118,7 @@
     <!-- Load Leaflet and Carto libraries -->
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
     <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/v4.0.0-beta/carto.min.js"></script>
+    <script src="https://unpkg.com/reqwest@2.0.5/reqwest.min.js"></script>
     
     <!-- Load our JavaScript -->
 <script src="./script.js"></script>

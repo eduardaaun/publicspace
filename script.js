@@ -42,26 +42,25 @@ casestudiesLayer.on('featureClicked', function (event) {
   //
   // I will add the content line-by-line here to make it a little easier to read.
   var content = '<h1>' + event.data['name'] + '</h1>'
-    content += '<div>' + event.data['activity'] + ' </div>';
+  content += '<div>' + event.data['activity'] + ' </div>';
   content += '<div>Who: ' + event.data['organizado'] + ' </div>';
-   content += '<div>Where: ' + event.data['local'] + ' </div>';
+  content += '<div>Where: ' + event.data['local'] + ' </div>';
   content += '<div>When: ' + event.data['_when'] + ' </div>';
   popup.setContent(content);
   
-
-  var sidebar = document.querySelector('.sidebar-feature-content');
-  casestudiesLayer.on('featureClicked', function (event) {
+  var sidebar = document.querySelector('.sidebar');
+  sidebar.style.display = 'block';
   var content = '<h3>' + event.data['name'] + '</h3>'
   content += '<h4>' + event.data['activity'] + ' <h4>';
+  content += '<img src="' + event.data['foto'] + '"/>';
   content += '<h5>' + event.data['descriptio'] + ' <h5>';
   content += '<div>Organized by: ' + event.data['organizado'] + ' </div>';
   content += '<div>' + event.data['_when'] + ' </div>';
-  
+  content += '<a href> More information: ' + event.data['contact'];
   
   // Then put the HTML inside the sidebar. Once you click on a feature, the HTML
   // for the sidebar will change.
   sidebar.innerHTML = content;
-});
   
   // Place the popup and open it
   popup.setLatLng(event.latLng);
@@ -126,6 +125,7 @@ var incomeStyle = new carto.style.CartoCSS(`
 `);
 // Add style to the data
 var incomeLayer = new carto.layer.Layer(incomeSource, incomeStyle);
+incomeLayer.hide();
 
 /*
  * Begin layer - density
@@ -148,6 +148,7 @@ var densityStyle = new carto.style.CartoCSS(`
 `);
 // Add style to the data
 var densityLayer = new carto.layer.Layer(densitySource, densityStyle);
+densityLayer.hide();
 
 /*
  * Begin layer five - bus stops
@@ -175,6 +176,7 @@ var busStyle = new carto.style.CartoCSS(`
 `);
 // Add style to the data
 var busLayer = new carto.layer.Layer(busSource, busStyle);
+busLayer.hide();
 
 /*
  * Begin layer six - bike share
@@ -202,6 +204,7 @@ var bikeStyle = new carto.style.CartoCSS(`
 `);
 // Add style to the data
 var bikeLayer = new carto.layer.Layer(bikeSource, bikeStyle);
+bikeLayer.hide();
 
 /*
  * Begin layer seven - subway line
@@ -220,7 +223,7 @@ var subwayStyle = new carto.style.CartoCSS(`
 `);
 // Add style to the data
 var subwayLayer = new carto.layer.Layer(subwaySource, subwayStyle);
-
+subwayLayer.hide();
 
 
 // Add the data to the map as two layers. Order matters here--first one goes on the bottom
@@ -316,6 +319,35 @@ spacePicker.addEventListener('change', function (e) {
   console.log('Dropdown changed to "' + tipo + '"');
 });
 
+/*
+ * Listen for changes on the layer picker - time picker 
+ */
+
+// Step 1: Find the dropdown by class. If you are using a different class, change this.
+var timePicker = document.querySelector('.time-picker');
+
+// Step 2: Add an event listener to the dropdown. We will run some code whenever the dropdown changes.
+timePicker.addEventListener('change', function (e) {
+  // The value of the dropdown is in e.target.value when it changes
+  var temp_perm = e.target.value;
+  
+  // Step 3: Decide on the SQL query to use and set it on the datasource
+  if (temp_perm === 'all') {
+    // If the value is "all" then we show all of the features, unfiltered
+   casestudiesSource.setQuery("SELECT * FROM case_studies_edited");
+  }
+  else {
+    // Else the value must be set to a life stage. Use it in an SQL query that will filter to that life stage.
+    casestudiesSource.setQuery("SELECT * FROM case_studies_edited WHERE temp_perm = '" + temp_perm + "'");
+    // console.log("no")
+
+    // occupationsSource.setQuery("SELECT * FROM case_studies_edited WHERE activity = " + activity + "'");
+  }
+  
+  // Sometimes it helps to log messages, here we log the lifestage. You can see this if you open developer tools and look at the console.
+  console.log('Dropdown changed to "' + temp_perm + '"');
+});
+
 // Keep track of whether the DENSITY layer is currently visible
 var densityVisible = true;
 
@@ -324,14 +356,14 @@ var densityButton = document.querySelector('.density-checkbox');
 densityButton.addEventListener('click', function () {
   if (densityVisible) {
     // density is visible, so remove that layer
-    client.removeLayer(densityLayer);
+    densityLayer.hide();
     
     // Then update the variable tracking whether the layer is shown
     densityVisible = false;
   }
   else {
     // Do the reverse if density is not visible
-    client.addLayer(densityLayer);
+    densityLayer.show();
     densityVisible = true;
   }
 });
@@ -344,14 +376,14 @@ var incomeButton = document.querySelector('.income-checkbox');
 incomeButton.addEventListener('click', function () {
   if (incomeVisible) {
     // income is visible, so remove that layer
-    client.removeLayer(incomeLayer);
+    incomeLayer.hide();
     
     // Then update the variable tracking whether the layer is shown
     incomeVisible = false;
   }
   else {
     // Do the reverse if income is not visible
-    client.addLayer(incomeLayer);
+    incomeLayer.show();
     incomeVisible = true;
   }
 });
@@ -364,14 +396,14 @@ var busButton = document.querySelector('.bus-checkbox');
 busButton.addEventListener('click', function () {
   if (busVisible) {
     // bus is visible, so remove that layer
-    client.removeLayer(busLayer);
+    busLayer.hide();
     
     // Then update the variable tracking whether the layer is shown
     busVisible = false;
   }
   else {
     // Do the reverse if bus is not visible
-    client.addLayer(busLayer);
+    busLayer.show();
     busVisible = true;
   }
 });
@@ -384,14 +416,14 @@ var bikeButton = document.querySelector('.bike-checkbox');
 bikeButton.addEventListener('click', function () {
   if (bikeVisible) {
     // bike is visible, so remove that layer
-    client.removeLayer(bikeLayer);
+    bikeLayer.hide();
     
     // Then update the variable tracking whether the layer is shown
     bikeVisible = false;
   }
   else {
     // Do the reverse if bus is not visible
-    client.addLayer(bikeLayer);
+    bikeLayer.show();
     bikeVisible = true;
   }
 });
@@ -404,15 +436,33 @@ var subwayButton = document.querySelector('.subway-checkbox');
 subwayButton.addEventListener('click', function () {
   if (subwayVisible) {
     // subway is visible, so remove that layer
-    client.removeLayer(subwayLayer);
+    subwayLayer.hide();
     
     // Then update the variable tracking whether the layer is shown
     subwayVisible = false;
   }
   else {
     // Do the reverse if bus is not visible
-    client.addLayer(subwayLayer);
+    subwayLayer.show();
     subwayVisible = true;
   }
 });
 
+// Make SQL to get the summary data you want
+var countSql = 'SELECT COUNT(*) FROM case_studies_edited';
+
+// Request the data from Carto using the reqwest library (you also need to load this in the HTML).
+// You will need to change 'brelsfoeagain' below to your username, otherwise this should work.
+reqwest('https://eduardaaun.carto.com/api/v2/sql/?q=' + countSql, function (response) {
+  // All of the data returned is in the response variable
+  console.log(response);
+
+  // The sum is in the first row's sum variable
+  var count = response.rows[0].count;
+
+  // Get the sidebar container element
+  var sidebar = document.querySelector('.sidebar-feature-content');
+
+  // Add the text including the sum to the sidebar
+  sidebar.innerHTML = '<h3>' + count + ' public spaces</div>';
+});
