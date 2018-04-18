@@ -20,13 +20,13 @@ var casestudiesSource = new carto.source.SQL('SELECT * FROM case_studies_edited'
 // Create style for the data
 var casestudiesStyle = new carto.style.CartoCSS(`
   #layer {
-  marker-width: 7;
+  marker-width: 15;
   marker-fill: deeppink;
-  marker-fill-opacity: 1;
+  marker-fill-opacity: .4;
   marker-allow-overlap: true;
   marker-line-width: 1;
   marker-line-color: #ffffff;
-  marker-line-opacity: 1;
+  marker-line-opacity: 0;
 }
 `);
 
@@ -48,15 +48,15 @@ casestudiesLayer.on('featureClicked', function (event) {
   content += '<div>When: ' + event.data['_when'] + ' </div>';
   popup.setContent(content);
   
-  var sidebar = document.querySelector('.sidebar');
+  var sidebar = document.querySelector('.sidebar-content');
   sidebar.style.display = 'block';
   var content = '<h3>' + event.data['name'] + '</h3>'
   content += '<h4>' + event.data['activity'] + ' <h4>';
   content += '<img src="' + event.data['foto'] + '"/>';
   content += '<h5>' + event.data['descriptio'] + ' <h5>';
   content += '<div>Organized by: ' + event.data['organizado'] + ' </div>';
-  content += '<div>' + event.data['_when'] + ' </div>';
-  content += '<a href> More information: ' + event.data['contact'];
+  content += '<div>When: ' + event.data['_when'] + ' </div>';
+  content += '<a href="' + event.data['contact'] + '" target="_blank"> More information </a>';
   
   // Then put the HTML inside the sidebar. Once you click on a feature, the HTML
   // for the sidebar will change.
@@ -466,3 +466,15 @@ reqwest('https://eduardaaun.carto.com/api/v2/sql/?q=' + countSql, function (resp
   // Add the text including the sum to the sidebar
   sidebar.innerHTML = '<h3>' + count + ' public spaces</div>';
 });
+
+var sidebarbutton = document.querySelector('.sidebar-button');
+sidebarbutton.addEventListener('click', function () {
+  var sidebarcontent = document.querySelector('.sidebar-content');
+  sidebarcontent.style.display = 'block';
+})
+
+var panelClose = document.querySelector('.panel-close');
+panelClose.addEventListener('click', function () {
+  var panelClose = document.querySelector('.panel-close');
+ panelClose.style.display = 'none';
+})

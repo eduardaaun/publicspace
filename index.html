@@ -7,12 +7,26 @@
     <link href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" rel="stylesheet">
     <link href="./styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dosis|Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   </head>
   
   <body>
     <div class="map-wrapper">
+      <div class="nav-bar"> 
+         <ul>
+ <li><a href="index.html">Map!</a></li>
+  <li><a href="rights.html">Rights + Responsibilities</a></li>
+  <li><a href="howto.html">How to</a></li>
+  <li><a href="/about.html">About</a></li>
+           
+</ul>
+      </div>
+    
       <div id="map"></div>
     </div>
+    
+    
 
     <div class="left-sidebar" style="height: 686px;">
     
@@ -76,7 +90,7 @@
     NEIGHBORHOOD CHARACTERISTICS 
   </p>
   <label class="container-orange"> Density
-  <input type="checkbox" class="density-checkbox" checked="checked">
+  <input type="checkbox" class="density-checkbox" checked="checked" >
   <span class="checkmark-orange"></span>
 </label> 
     <label class="container-orange">Income
@@ -102,9 +116,18 @@
 </label>
     
 <div class="sidebar">
+  <a aria-label="close" class="panel-close" href="/" data-reactid=".0.4.0.0">×</a>
   
+  <button class="sidebar-button">
+ <div style="font-size:2em; color:#B10CFF">
+   <i class="fas fa-angle-double-down"></i>
+</div>
+  </button>
   
-        <h2>// public space</h2>
+
+  
+  <div class="sidebar-content">
+    <h2>// public space</h2>
         
         <!-- We create a div where the feature data will go when clicked on: -->
         <div class="sidebar-feature-content"></div>
@@ -112,6 +135,8 @@
         <div class="sidebar-footer">
   
         </div>
+  </div>
+  
       </div>
     
     
@@ -119,6 +144,7 @@
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
     <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/v4.0.0-beta/carto.min.js"></script>
     <script src="https://unpkg.com/reqwest@2.0.5/reqwest.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
     
     <!-- Load our JavaScript -->
 <script src="./script.js"></script>
