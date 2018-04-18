@@ -5,22 +5,35 @@ html, body {
   width: 100%;
 }
 
-.left-sidebar{
-    max-height: 100%;
-    width: 250px;
+.nav-bar {
+  background: transparent; 
 }
-.left-sidebar {
-    position: absolute;
-    opacity: 0.9;
-    left: 10px;
-    display: inline-block;
-    background-color: white;
-    border: 5px;
-    box-shadow: 1px 1px 3px #9e9e9e;
-    padding: 20px;
-    margin: 7px;
-    font-size: 1.6em;
-    z-index: 3;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: right;
+}
+
+li a {
+    display: block;
+    color: #B10CFF;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    font-weight:bold;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+ color: #FF7800;
+}
   
 .map-wrapper {
   position: relative;
@@ -33,6 +46,19 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+.left-sidebar{
+    height: 100%;
+    width: 20%;
+    position: absolute;
+    opacity: 0.9;
+    left: 1px;
+    margin-top: 0px;
+    display: inline-block;
+    background-color: white;
+    padding: 20px;
+    font-size: 1.6em;
+    z-index: 3;
 
 .layer-picker:
 position: absolute;
@@ -52,6 +78,7 @@ p{
   font-size:40px;
   font-weight:bold;
   margin-top:0px;
+  text-transform: uppercase; 
 }  
 
 .subtitle-commoning{
@@ -78,18 +105,34 @@ p{
 }  
 .description{
   color:black;
-  font-family:helvetica;
+  font-family:'Inconsolata', monospace;
   font-size:12px;
 }
 
 a{
-  color:#FF7800;
+  color:#B10CFF;
 }
   
 #map {
   position: absolute;
   height: 100%;
   width: 100%;
+}
+.people-picker {
+    font-family: 'Inconsolata', monospace;
+  color: deeppink; 
+}
+.action-picker {
+    font-family: 'Inconsolata', monospace;
+   color: deeppink; 
+}
+.space-picker {
+    font-family: 'Inconsolata', monospace;
+   color: deeppink; 
+}
+.time-picker {
+    font-family: 'Inconsolata', monospace;
+   color: deeppink; 
 }
 
 /* Customize the label (the container) */
@@ -255,22 +298,18 @@ h1 {
 }
 
 .sidebar {
-  display: none;
+  display: block;
   background: #eee;
   opacity: 0.9;
   float: right;
-  height: 100%;
-  padding: 20px;
-  width: 18%;
+  padding: 10px;
   margin: 15px; 
   position: fixed; 
   z-index: 1; 
-  top: 5px; 
+  top: 50px; 
   right: 5px;
   background-color: white; 
-  box-shadow: 1px 1px 3px #9e9e9e;
-  overflow: scroll; 
-  padding-top: 20px; 
+  box-shadow: 1px 1px 3px #9e9e9e; 
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 .sidebar-footer {
@@ -283,6 +322,20 @@ h1 {
     font-weight: bold;
     color: black;
     margin-top:0; 
+    display: block; 
+    width: 250px;
+   
+}
+
+.sidebar-content {
+  display:none;
+   width: 250px;
+}
+
+.sidebar-button {
+    border: none;
+    background: white;
+    right: 10px; 
 }
 
 
@@ -290,11 +343,15 @@ h2 {
     display: block;
     font-size: 20px;
     font-family: 'Dosis', monospace;
-  text-transform: uppercase;
+    text-transform: uppercase;
     font-weight: bold;
     color: #B10CFF;
     margin-top:0; 
    
+}
+
+img {
+    width: 100%;
 }
 
 h3 {
@@ -327,21 +384,61 @@ h5 {
     color: deeppink;
     text-align: left;
     margin-top:2px; 
-   line-height: 1.2;
+    line-height: 1.2;
 }
 
-
-.sidebar-feature-content{
+h6 {
     display: block;
     font-size: 12px;
     font-family:'Inconsolata', monospace;
-    font-weight: normal; 
-    color: black;
-    line-height: 1.5;
-   
+    font-weight: bold;
+    color: deeppink;
+    text-align: left;
+    margin-top:2px; 
+    line-height: 1.2;
 }
 
-img {
-    padding: 5px;
-    width: 100%;
+.panel-close, .panel-close:focus, .panel-close:hover, .panel-closeactive {
+    color: #FF7800;
+    text-decoration: none;
+}
+.panel-close {
+    display: inline-block;
+    float: right;
+    font-size: 32px;
+    line-height: 32px;
+    height: 32px;
+    width: 32px;
+    color: #B10CFF;
+}
+.btn-add, .panel-close {
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
+}
+.btn-add div, .legend-help, .panel-close {
+    text-align: center;
+}
+
+.title-box {
+  width:500px;
+  float: left;
+  margin: 20px;
+  padding: 5px;
+}
+
+.page-title {
+  color:#FF7800;
+  font-family:'Dosis', sans-serif;
+  font-size:20px;
+  font-weight:bold;
+  margin-top:0px;
+  text-transform: uppercase; 
+}
+
+.publication {
+}
+
+a:link {
+    background-color: transparent; 
+    text-decoration: none;
 }
