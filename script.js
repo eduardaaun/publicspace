@@ -1,7 +1,11 @@
 // This isn't necessary but it keeps the editor from thinking L and carto are typos
 /* global L, carto */
 
-var map = L.map('map').setView([-15.794236, -47.883568,], 11);
+var map = L.map('map', {
+  zoomControl: false
+}).setView([-15.794236, -47.883568,], 11);
+
+L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 // Add base layer
 L.tileLayer('https://api.mapbox.com/styles/v1/eduardaaun/cje7b2cg93v4x2so2t3pnsvog/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZWR1YXJkYWF1biIsImEiOiJjajI1OWQ4b3kwMDhtMzJsZWdmOHhocWFpIn0.dM0AOmAI9UmpTcD6J8jNKw', {
@@ -21,8 +25,8 @@ var casestudiesSource = new carto.source.SQL('SELECT * FROM case_studies_edited'
 var casestudiesStyle = new carto.style.CartoCSS(`
   #layer {
   marker-width: 15;
-  marker-fill: deeppink;
-  marker-fill-opacity: .4;
+  marker-fill: ramp([people], (#ed208a, #16fc73, #b10cff, #ff7800), ("cultural producer", "community organization", "urban experts", "activists"), "=");
+  marker-fill-opacity: .6;
   marker-allow-overlap: true;
   marker-line-width: 1;
   marker-line-color: #ffffff;
@@ -32,7 +36,15 @@ var casestudiesStyle = new carto.style.CartoCSS(`
 
 // Add style to the data
 var casestudiesLayer = new carto.layer.Layer(casestudiesSource, casestudiesStyle, {
-  featureClickColumns: ['cartodb_id', 'atividade','activity','organizado', 'name', 'descriptio','_when', 'local','foto','foto_2', 'foto_3','contact',]
+  featureClickColumns: ['cartodb_id', 'atividade','activity','organizado', 'name', 'descriptio','_when', 'local','foto','foto_2', 'foto_3','contact',],
+  featureOverColumns: ['cartodb_id', 'atividade','activity','organizado', 'name', 'descriptio','_when', 'local','foto','foto_2', 'foto_3','contact',]
+});
+
+casestudiesLayer.on('featureClick', function (event) {
+   var content = '<h1>' + event.data['name'] + '</h1>'
+  content += '<h4>' + event.data['activity'] + ' <h4>';
+  popup.setContent(content);
+  console.log('featureClick');
 });
 
 var popup = L.popup();
@@ -42,20 +54,42 @@ casestudiesLayer.on('featureClicked', function (event) {
   //
   // I will add the content line-by-line here to make it a little easier to read.
   var content = '<h1>' + event.data['name'] + '</h1>'
-  content += '<div>' + event.data['activity'] + ' </div>';
-  content += '<div>Who: ' + event.data['organizado'] + ' </div>';
-  content += '<div>Where: ' + event.data['local'] + ' </div>';
-  content += '<div>When: ' + event.data['_when'] + ' </div>';
+  content += '<h4>' + event.data['activity'] + ' <h4>';
   popup.setContent(content);
   
   var sidebar = document.querySelector('.sidebar-content');
   sidebar.style.display = 'block';
+  
+  
+  var panelClose = document.querySelector('.panel-close');
+  panelClose.style.display = 'block';
+  
   var content = '<h3>' + event.data['name'] + '</h3>'
   content += '<h4>' + event.data['activity'] + ' <h4>';
-  content += '<img src="' + event.data['foto'] + '"/>';
-  content += '<h5>' + event.data['descriptio'] + ' <h5>';
-  content += '<div>Organized by: ' + event.data['organizado'] + ' </div>';
+  
+  if (event.data['foto'] == null) {
+    content += '<d>Sorry! No image available</div>';
+  }
+  else {
+    content += '<img src="' + event.data['foto'] + '"/>';
+  }
+    
+  if (event.data['descriptio'] == null) {
+    content += '<div></div>';
+  }
+  else {
+    content += '<h5>' + event.data['descriptio'] + ' <h5>';
+  }
+  
+  content += '<h5>Organized by: ' + event.data['organizado'] + ' <h5>';
+  content += '<div>Where: ' + event.data['local'] + ' </div>';
+  
+  if (event.data ['_when'] == null) {
+    content += '<div></div>';
+  }
+  else {
   content += '<div>When: ' + event.data['_when'] + ' </div>';
+  }
   content += '<a href="' + event.data['contact'] + '" target="_blank"> More information </a>';
   
   // Then put the HTML inside the sidebar. Once you click on a feature, the HTML
@@ -65,8 +99,10 @@ casestudiesLayer.on('featureClicked', function (event) {
   // Place the popup and open it
   popup.setLatLng(event.latLng);
   popup.openOn(map);
-});
 
+  // Zoom to the latitude and longitude of the clicked feature
+  map.setView([event.latLng.lat, event.latLng.lng], 15);
+});
 
 /*
  * Begin layer two - spaces
@@ -78,8 +114,8 @@ var spacesSource = new carto.source.SQL('SELECT * FROM espacos');
 // Create style for the data
 var spacesStyle = new carto.style.CartoCSS(`
 #layer {
-  polygon-fill: deeppink;
-  polygon-opacity: 1;
+  polygon-fill: black;
+  polygon-opacity: .7;
   }
 `);
 
@@ -162,7 +198,7 @@ var busStyle = new carto.style.CartoCSS(`
  #layer {
   marker-width: 10;
   marker-fill: #16fc73;
-  marker-fill-opacity: 0;
+  marker-fill-opacity: 1;
   marker-file: url('https://s3.amazonaws.com/com.cartodb.users-assets.production/maki-icons/bus-18.svg');
   marker-allow-overlap: true;
   marker-line-width: 1;
@@ -190,7 +226,7 @@ var bikeStyle = new carto.style.CartoCSS(`
   #layer {
   marker-width: 10;
   marker-fill: #16fc73;
-  marker-fill-opacity: 0;
+  marker-fill-opacity: 1;
   marker-file: url('https://s3.amazonaws.com/com.cartodb.users-assets.production/maki-icons/bicycle-18.svg');
   marker-allow-overlap: true;
   marker-line-width: 1;
@@ -248,12 +284,12 @@ peoplePicker.addEventListener('change', function (e) {
     // If the value is "all" then we show all of the features, unfiltered
     casestudiesSource.setQuery("SELECT * FROM case_studies_edited");
   }
+  else if (people === 'none'){
+    casestudiesLayer.hide();
+  }
   else {
-    // Else the value must be set to a life stage. Use it in an SQL query that will filter to that life stage.
-    casestudiesSource.setQuery("SELECT * FROM case_studies_edited WHERE people = '" + people + "'");
-    // console.log("no")
-
-    // occupationsSource.setQuery("SELECT * FROM case_studies_edited WHERE activity = " + activity + "'");
+ casestudiesSource.setQuery("SELECT * FROM case_studies_edited WHERE people = '" + people + "'");
+ casestudiesLayer.show();
   }
   
   // Sometimes it helps to log messages, here we log the lifestage. You can see this if you open developer tools and look at the console.
@@ -275,12 +311,17 @@ actionPicker.addEventListener('change', function (e) {
   
   // Step 3: Decide on the SQL query to use and set it on the datasource
   if (activity === 'all') {
+    casestudiesLayer.show();
     // If the value is "all" then we show all of the features, unfiltered
     casestudiesSource.setQuery("SELECT * FROM case_studies_edited");
+  }
+  else if (activity === 'none'){
+    casestudiesLayer.hide();
   }
   else {
     // Else the value must be set to a life stage. Use it in an SQL query that will filter to that life stage.
     casestudiesSource.setQuery("SELECT * FROM case_studies_edited WHERE activity = '" + activity + "'");
+    casestudiesLayer.show();
     // console.log("no")
 
     // occupationsSource.setQuery("SELECT * FROM case_studies_edited WHERE activity = " + activity + "'");
@@ -307,9 +348,13 @@ spacePicker.addEventListener('change', function (e) {
     // If the value is "all" then we show all of the features, unfiltered
     spacesSource.setQuery("SELECT * FROM espacos");
   }
+   else if (tipo === 'none'){
+    spacesLayer.hide();
+  }
   else {
     // Else the value must be set to a life stage. Use it in an SQL query that will filter to that life stage.
     spacesSource.setQuery("SELECT * FROM espacos WHERE tipo = '" + tipo + "'");
+    spacesLayer.show();
     // console.log("no")
 
     // occupationsSource.setQuery("SELECT * FROM case_studies_edited WHERE activity = " + activity + "'");
@@ -336,9 +381,13 @@ timePicker.addEventListener('change', function (e) {
     // If the value is "all" then we show all of the features, unfiltered
    casestudiesSource.setQuery("SELECT * FROM case_studies_edited");
   }
+  else if (temp_perm === 'none'){
+    casestudiesLayer.hide();
+  }
   else {
     // Else the value must be set to a life stage. Use it in an SQL query that will filter to that life stage.
     casestudiesSource.setQuery("SELECT * FROM case_studies_edited WHERE temp_perm = '" + temp_perm + "'");
+    casestudiesLayer.show();
     // console.log("no")
 
     // occupationsSource.setQuery("SELECT * FROM case_studies_edited WHERE activity = " + activity + "'");
@@ -348,23 +397,17 @@ timePicker.addEventListener('change', function (e) {
   console.log('Dropdown changed to "' + temp_perm + '"');
 });
 
-// Keep track of whether the DENSITY layer is currently visible
-var densityVisible = true;
-
 // When the density button is clicked, show or hide the layer
-var densityButton = document.querySelector('.density-checkbox');
-densityButton.addEventListener('click', function () {
-  if (densityVisible) {
-    // density is visible, so remove that layer
-    densityLayer.hide();
-    
-    // Then update the variable tracking whether the layer is shown
-    densityVisible = false;
+var densityCheckbox = document.querySelector('.density-checkbox');
+var densityLegend = document.querySelector('.legend-density');
+densityCheckbox.addEventListener('click', function () {
+  if (densityCheckbox.checked) {
+    densityLayer.show();
+    densityLegend.style.display = 'block';
   }
   else {
-    // Do the reverse if density is not visible
-    densityLayer.show();
-    densityVisible = true;
+    densityLayer.hide();
+    densityLegend.style.display = 'none';
   }
 });
 
@@ -372,39 +415,32 @@ densityButton.addEventListener('click', function () {
 var incomeVisible = true;
 
 // When the income button is clicked, show or hide the layer
-var incomeButton = document.querySelector('.income-checkbox');
-incomeButton.addEventListener('click', function () {
-  if (incomeVisible) {
-    // income is visible, so remove that layer
-    incomeLayer.hide();
-    
-    // Then update the variable tracking whether the layer is shown
-    incomeVisible = false;
+var incomeCheckbox = document.querySelector('.income-checkbox');
+var incomeLegend = document.querySelector('.legend-income');
+incomeCheckbox.addEventListener('click', function () {
+ if (incomeCheckbox.checked) {
+   incomeLayer.show();
+   incomeLegend.style.display = 'block';
   }
   else {
-    // Do the reverse if income is not visible
-    incomeLayer.show();
-    incomeVisible = true;
+  incomeLayer.hide();
+    incomeLegend.style.display = 'none';
   }
 });
-
 // Keep track of whether the BUS layer is currently visible
 var busVisible = true;
 
 // When the bus button is clicked, show or hide the layer
-var busButton = document.querySelector('.bus-checkbox');
-busButton.addEventListener('click', function () {
-  if (busVisible) {
-    // bus is visible, so remove that layer
-    busLayer.hide();
-    
-    // Then update the variable tracking whether the layer is shown
-    busVisible = false;
+var busCheckbox = document.querySelector('.bus-checkbox');
+var busLegend = document.querySelector('.legend-access');
+busCheckbox.addEventListener('click', function () {
+ if (busCheckbox.checked) {
+   busLayer.show();
+   busLegend.style.display = 'block';
   }
   else {
-    // Do the reverse if bus is not visible
-    busLayer.show();
-    busVisible = true;
+  busLayer.hide();
+    busLegend.style.display = 'none';
   }
 });
 
@@ -412,19 +448,16 @@ busButton.addEventListener('click', function () {
 var bikeVisible = true;
 
 // When the bike button is clicked, show or hide the layer
-var bikeButton = document.querySelector('.bike-checkbox');
-bikeButton.addEventListener('click', function () {
-  if (bikeVisible) {
-    // bike is visible, so remove that layer
-    bikeLayer.hide();
-    
-    // Then update the variable tracking whether the layer is shown
-    bikeVisible = false;
+var bikeCheckbox = document.querySelector('.bike-checkbox');
+var bikeLegend = document.querySelector('.legend-access');
+bikeCheckbox.addEventListener('click', function () {
+ if (bikeCheckbox.checked) {
+   bikeLayer.show();
+   bikeLegend.style.display = 'block';
   }
   else {
-    // Do the reverse if bus is not visible
-    bikeLayer.show();
-    bikeVisible = true;
+  bikeLayer.hide();
+  bikeLegend.style.display = 'none';
   }
 });
 
@@ -432,19 +465,16 @@ bikeButton.addEventListener('click', function () {
 var subwayVisible = true;
 
 // When the subway button is clicked, show or hide the layer
-var subwayButton = document.querySelector('.subway-checkbox');
-subwayButton.addEventListener('click', function () {
-  if (subwayVisible) {
-    // subway is visible, so remove that layer
-    subwayLayer.hide();
-    
-    // Then update the variable tracking whether the layer is shown
-    subwayVisible = false;
+var subwayCheckbox = document.querySelector('.subway-checkbox');
+var subwayLegend = document.querySelector('.legend-access');
+subwayCheckbox.addEventListener('click', function () {
+ if (subwayCheckbox.checked) {
+   subwayLayer.show();
+   subwayLegend.style.display = 'block';
   }
   else {
-    // Do the reverse if bus is not visible
-    subwayLayer.show();
-    subwayVisible = true;
+  subwayLayer.hide();
+  subwayLegend.style.display = 'none';
   }
 });
 
@@ -470,11 +500,15 @@ reqwest('https://eduardaaun.carto.com/api/v2/sql/?q=' + countSql, function (resp
 var sidebarbutton = document.querySelector('.sidebar-button');
 sidebarbutton.addEventListener('click', function () {
   var sidebarcontent = document.querySelector('.sidebar-content');
+  var panelClose = document.querySelector('.panel-close');
   sidebarcontent.style.display = 'block';
+  panelClose.style.display = 'block';
 })
 
 var panelClose = document.querySelector('.panel-close');
 panelClose.addEventListener('click', function () {
+  var sidebarcontent = document.querySelector('.sidebar-content');
   var panelClose = document.querySelector('.panel-close');
- panelClose.style.display = 'none';
+  sidebarcontent.style.display = 'none';
+  panelClose.style.display = 'none';
 })

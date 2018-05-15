@@ -15,7 +15,7 @@
     <div class="map-wrapper">
       <div class="nav-bar"> 
          <ul>
- <li><a href="index.html">Map!</a></li>
+<li><a href="index.html">Map!</a></li>
   <li><a href="rights.html">Rights + Responsibilities</a></li>
   <li><a href="howto.html">How to</a></li>
   <li><a href="about.html">About</a></li>
@@ -28,11 +28,14 @@
     
     
 
-    <div class="left-sidebar" style="height: 686px;">
+    <div class="left-sidebar" style="height: 100%;">
     
-    <p class="title">
-        PUBLIC</br>SPACE // <span style="color:black;font-size:25px;text-transform: uppercase;">brasilia <p>
-  
+      <div class="logo">
+        <img src="https://cdn.glitch.com/2a4de990-3bc6-4c91-82e4-c49f6a4031b9%2Fpublicspace-bsb.png?1525324511051">
+      </div>
+  <div class="left-sidebar-content">
+    
+     
   <p class ="subtitle-commoning">
     PEOPLE / ACTIONS / SPACES / TIME 
   </p>
@@ -41,7 +44,8 @@
         <option value="community organization">Community organizations</option>
         <option value="cultural producer">Cultural producers</option>
         <option value="urban experts">Urban experts</option>
-     <option value="activists">Activists</option>
+        <option value="activists">Activists</option>
+        <option value="none">None</option>
   </select>
    <br>
    <select class="action-picker">
@@ -63,6 +67,7 @@
         <option value="participatory mapping">Participatory Mapping</option>
         <option value="Jane's Walk">Jane's Walk</option>
         <option value="Playstreet">Playstreet</option>
+        <option value="none">None</option>
   </select>
  <br>
    <select class="space-picker">
@@ -78,23 +83,25 @@
         <option value="passarela subterranea">Undeground passages</option>
         <option value="equipamento cultural">Cultural Amenities</option>
         <option value="casa de cultura">Cultural Houses</option>
+        <option value="none">None</option>
   </select>
     <br>
    <select class="time-picker">
         <option value="all">All times</option>
         <option value="temporary">Temporary</option>
         <option value="permanent">Permanent</option>
+        <option value="none">None</option>
   </select>
   
     <p class ="subtitle-charact">
     NEIGHBORHOOD CHARACTERISTICS 
   </p>
   <label class="container-orange"> Density
-  <input type="checkbox" class="density-checkbox" checked="checked" >
+  <input type="checkbox" class="density-checkbox" >
   <span class="checkmark-orange"></span>
 </label> 
     <label class="container-orange">Income
-  <input type="checkbox" class="income-checkbox" checked="checked">
+  <input type="checkbox" class="income-checkbox" >
   <span class="checkmark-orange"></span>
 </label>
   
@@ -103,20 +110,42 @@
     </p>
     
    <label class="container-green"> Bus Stops
-  <input type="checkbox" class="bus-checkbox" checked="checked">
+  <input type="checkbox" class="bus-checkbox" >
   <span class="checkmark-green"></span>
 </label> 
     <label class="container-green"> Subway Line
-  <input type="checkbox" class="subway-checkbox" checked="checked">
+  <input type="checkbox" class="subway-checkbox" >
   <span class="checkmark-green"></span>
 </label>
     <label class="container-green"> Shared Bike Stations
-  <input type="checkbox" class="bike-checkbox" checked="checked">
+  <input type="checkbox" class="bike-checkbox" >
   <span class="checkmark-green"></span>
 </label>
     
+    <div class="legend-people">
+      <img src="https://cdn.glitch.com/2a4de990-3bc6-4c91-82e4-c49f6a4031b9%2Flegend-organization.svg?1525574877998">
+    </div>
+    <div class="legend-income">
+      <img src="https://cdn.glitch.com/208a0d7e-ba15-437a-922f-d3c0f5f0ee77%2Flegend-income-bl-nomargin.jpg?1524788406461">
+    </div>
+    <div class="legend-density">
+      <img src="https://cdn.glitch.com/208a0d7e-ba15-437a-922f-d3c0f5f0ee77%2Fdensity-legend-nomargun.jpg?1524788619480">
+    </div>
+     <div class="legend-access">
+      <img src="https://cdn.glitch.com/208a0d7e-ba15-437a-922f-d3c0f5f0ee77%2Flegend-access-01.jpg?1524789452866">
+    </div>
+      <div class="calendar">
+<div data-tockify-component="mini" data-tockify-calendar="eduarda"></div>
+<script data-cfasync="false" data-tockify-script="embed" src="https://public.tockify.com/browser/embed.js"></script>
+      </div>
+      <div class="attributions">
+        Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.
+      </div>
+     </div>
+      
+    
 <div class="sidebar">
-  <a aria-label="close" class="panel-close" href="/" data-reactid=".0.4.0.0">×</a>
+  <a aria-label="close" class="panel-close">×</a>
   
   <button class="sidebar-button">
  <div style="font-size:2em; color:#B10CFF">
