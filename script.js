@@ -14,7 +14,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/eduardaaun/cje7b2cg93v4x2so2t3pnsv
 
 // Initialize Carto
 var client = new carto.Client({
-  apiKey: 'apikey',
+ apiKey: 'xb7MSSHI6lsKXCsVxHIEVA',
   username: 'eduardaaun'
 });
 
@@ -40,11 +40,11 @@ var casestudiesLayer = new carto.layer.Layer(casestudiesSource, casestudiesStyle
   featureOverColumns: ['cartodb_id', 'atividade','activity','organizado', 'name', 'descriptio','_when', 'local','foto','foto_2', 'foto_3','contact',]
 });
 
-casestudiesLayer.on('featureClick', function (event) {
+casestudiesLayer.on('featureOver', function (event) {
    var content = '<h1>' + event.data['name'] + '</h1>'
   content += '<h4>' + event.data['activity'] + ' <h4>';
   popup.setContent(content);
-  console.log('featureClick');
+  console.log('featureOver');
 });
 
 var popup = L.popup();
