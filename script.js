@@ -14,7 +14,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/eduardaaun/cje7b2cg93v4x2so2t3pnsv
 
 // Initialize Carto
 var client = new carto.Client({
-  apiKey: 'apikey',
+ apiKey: 'xb7MSSHI6lsKXCsVxHIEVA',
   username: 'eduardaaun'
 });
 
