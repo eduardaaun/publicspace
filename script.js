@@ -40,11 +40,11 @@ var casestudiesLayer = new carto.layer.Layer(casestudiesSource, casestudiesStyle
   featureOverColumns: ['cartodb_id', 'atividade','activity','organizado', 'name', 'descriptio','_when', 'local','foto','foto_2', 'foto_3','contact',]
 });
 
-casestudiesLayer.on('featureOver', function (event) {
+casestudiesLayer.on('featureClick', function (event) {
    var content = '<h1>' + event.data['name'] + '</h1>'
   content += '<h4>' + event.data['activity'] + ' <h4>';
   popup.setContent(content);
-  console.log('featureOver');
+  console.log('featureClick');
 });
 
 var popup = L.popup();
